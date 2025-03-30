@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; DARCA&#39;s Abstraction for embeddings. 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Usage Guide" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DARCA's Abstraction for embeddings.
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#darca_embeddings.BaseEmbeddingClient"><code class="docutils literal notranslate"><span class="pre">BaseEmbeddingClient</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.BaseEmbeddingClient.get_embedding"><code class="docutils literal notranslate"><span class="pre">BaseEmbeddingClient.get_embedding()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.BaseEmbeddingClient.get_embeddings"><code class="docutils literal notranslate"><span class="pre">BaseEmbeddingClient.get_embeddings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#darca_embeddings.EmbeddingAPIKeyMissing"><code class="docutils literal notranslate"><span class="pre">EmbeddingAPIKeyMissing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingAPIKeyMissing.add_note"><code class="docutils literal notranslate"><span class="pre">EmbeddingAPIKeyMissing.add_note()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingAPIKeyMissing.args"><code class="docutils literal notranslate"><span class="pre">EmbeddingAPIKeyMissing.args</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingAPIKeyMissing.log_exception"><code class="docutils literal notranslate"><span class="pre">EmbeddingAPIKeyMissing.log_exception()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingAPIKeyMissing.to_dict"><code class="docutils literal notranslate"><span class="pre">EmbeddingAPIKeyMissing.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingAPIKeyMissing.with_traceback"><code class="docutils literal notranslate"><span class="pre">EmbeddingAPIKeyMissing.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#darca_embeddings.EmbeddingClient"><code class="docutils literal notranslate"><span class="pre">EmbeddingClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#darca_embeddings.EmbeddingException"><code class="docutils literal notranslate"><span class="pre">EmbeddingException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingException.add_note"><code class="docutils literal notranslate"><span class="pre">EmbeddingException.add_note()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingException.args"><code class="docutils literal notranslate"><span class="pre">EmbeddingException.args</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingException.log_exception"><code class="docutils literal notranslate"><span class="pre">EmbeddingException.log_exception()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingException.to_dict"><code class="docutils literal notranslate"><span class="pre">EmbeddingException.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingException.with_traceback"><code class="docutils literal notranslate"><span class="pre">EmbeddingException.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#darca_embeddings.EmbeddingResponseError"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponseError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingResponseError.add_note"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponseError.add_note()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingResponseError.args"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponseError.args</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingResponseError.log_exception"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponseError.log_exception()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingResponseError.to_dict"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponseError.to_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.EmbeddingResponseError.with_traceback"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponseError.with_traceback()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#darca_embeddings.OpenAIEmbeddingClient"><code class="docutils literal notranslate"><span class="pre">OpenAIEmbeddingClient</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.OpenAIEmbeddingClient.get_embedding"><code class="docutils literal notranslate"><span class="pre">OpenAIEmbeddingClient.get_embedding()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#darca_embeddings.OpenAIEmbeddingClient.get_embeddings"><code class="docutils literal notranslate"><span class="pre">OpenAIEmbeddingClient.get_embeddings()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DARCA's Abstraction for embeddings.</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<span id="id1"></span><h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p id="module-darca_embeddings">darca-embeddings</p>
+<p>Modular, backend-agnostic interface for generating text embeddings.
+Default backend: OpenAI</p>
+<dl class="simple">
+<dt>Exports:</dt><dd><ul class="simple">
+<li><p>EmbeddingClient: Unified interface for embeddings</p></li>
+<li><p>BaseEmbeddingClient: Abstract base for all embeddings backends</p></li>
+<li><p>OpenAIEmbeddingClient: Concrete backend using OpenAI Embedding API</p></li>
+<li><p>All custom exceptions</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_embeddings.BaseEmbeddingClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_embeddings.</span></span><span class="sig-name descname"><span class="pre">BaseEmbeddingClient</span></span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#BaseEmbeddingClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.BaseEmbeddingClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for Embedding providers.</p>
+<p>Implementations of this class must provide methods to generate embeddings
+from text input, typically by interacting with an external model or
+service.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.BaseEmbeddingClient.get_embedding">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#BaseEmbeddingClient.get_embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.BaseEmbeddingClient.get_embedding" title="Link to this definition"></a></dt>
+<dd><p>Generate a vector embedding for a single piece of text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The input string to be embedded.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A floating-point vector (list) representation of the input
+text.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[float]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#darca_embeddings.EmbeddingException" title="darca_embeddings.EmbeddingException"><strong>EmbeddingException</strong></a> – If something goes wrong with the embedding
+request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.BaseEmbeddingClient.get_embeddings">
+<span class="sig-name descname"><span class="pre">get_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#BaseEmbeddingClient.get_embeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.BaseEmbeddingClient.get_embeddings" title="Link to this definition"></a></dt>
+<dd><p>Generate vector embeddings for a list of input texts.</p>
+<p>By default, this method calls <a class="reference internal" href="#darca_embeddings.BaseEmbeddingClient.get_embedding" title="darca_embeddings.BaseEmbeddingClient.get_embedding"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_embedding()</span></code></a> for each string
+in <code class="docutils literal notranslate"><span class="pre">texts</span></code>.
+Subclasses may override this method to provide more efficient batch
+processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>texts</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – A list of input strings to embed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of embedding vectors, where each vector is a list of
+floats.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[list[float]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#darca_embeddings.EmbeddingException" title="darca_embeddings.EmbeddingException"><strong>EmbeddingException</strong></a> – If something goes wrong while generating
+embeddings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingAPIKeyMissing">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_embeddings.</span></span><span class="sig-name descname"><span class="pre">EmbeddingAPIKeyMissing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#EmbeddingAPIKeyMissing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.EmbeddingAPIKeyMissing" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#darca_embeddings.EmbeddingException" title="darca_embeddings.embedding.EmbeddingException"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmbeddingException</span></code></a></p>
+<p>Raised when the API key is missing for the selected embeddings provider.</p>
+<p>Typically occurs when the environment variable (e.g. <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code>)
+is not set or is invalid.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingAPIKeyMissing.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingAPIKeyMissing.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingAPIKeyMissing.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_embeddings.EmbeddingAPIKeyMissing.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingAPIKeyMissing.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingAPIKeyMissing.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingAPIKeyMissing.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingAPIKeyMissing.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingAPIKeyMissing.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingAPIKeyMissing.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_embeddings.</span></span><span class="sig-name descname"><span class="pre">EmbeddingClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'openai'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#EmbeddingClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.EmbeddingClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A unified client for generating embeddings using the darca pluggable
+backend system. Defaults to OpenAI.</p>
+<p>This class wraps the functionality of various embedding providers
+behind a single interface. By specifying the <code class="docutils literal notranslate"><span class="pre">backend</span></code> argument,
+you can switch between multiple embeddings backends (e.g., OpenAI,
+HuggingFace, etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>backend</strong> (<em>str</em>) – The backend provider to use, e.g. <code class="docutils literal notranslate"><span class="pre">openai</span></code>
+or <code class="docutils literal notranslate"><span class="pre">huggingface</span></code>.</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments passed to the backend
+client’s constructor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#darca_embeddings.EmbeddingException" title="darca_embeddings.EmbeddingException"><strong>EmbeddingException</strong></a> – If the chosen backend is not implemented
+or unsupported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingException">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_embeddings.</span></span><span class="sig-name descname"><span class="pre">EmbeddingException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#EmbeddingException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.EmbeddingException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DarcaException</span></code></p>
+<p>Base class for all darca-embeddings exceptions.</p>
+<p>This exception can be extended or raised for any errors
+that occur within the darca-embeddings package.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingException.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingException.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingException.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_embeddings.EmbeddingException.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingException.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingException.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingException.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingException.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingException.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingException.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingResponseError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_embeddings.</span></span><span class="sig-name descname"><span class="pre">EmbeddingResponseError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#EmbeddingResponseError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.EmbeddingResponseError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#darca_embeddings.EmbeddingException" title="darca_embeddings.embedding.EmbeddingException"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmbeddingException</span></code></a></p>
+<p>Raised when an embeddings API request fails or returns malformed data.</p>
+<p>For example, it may be raised if the network request times out, the API
+returns a non-200 status code, or the response is not in the expected
+format.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingResponseError.add_note">
+<span class="sig-name descname"><span class="pre">add_note</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingResponseError.add_note" title="Link to this definition"></a></dt>
+<dd><p>Exception.add_note(note) –
+add a note to the exception</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingResponseError.args">
+<span class="sig-name descname"><span class="pre">args</span></span><a class="headerlink" href="#darca_embeddings.EmbeddingResponseError.args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingResponseError.log_exception">
+<span class="sig-name descname"><span class="pre">log_exception</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingResponseError.log_exception" title="Link to this definition"></a></dt>
+<dd><p>Logs the exception details using DarcaLogger.
+Always logs as an error because exceptions indicate failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingResponseError.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingResponseError.to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert exception details to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary representation of the exception</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.EmbeddingResponseError.with_traceback">
+<span class="sig-name descname"><span class="pre">with_traceback</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#darca_embeddings.EmbeddingResponseError.with_traceback" title="Link to this definition"></a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="darca_embeddings.OpenAIEmbeddingClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">darca_embeddings.</span></span><span class="sig-name descname"><span class="pre">OpenAIEmbeddingClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'text-embedding-ada-002'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#OpenAIEmbeddingClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.OpenAIEmbeddingClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#darca_embeddings.BaseEmbeddingClient" title="darca_embeddings.embedding.BaseEmbeddingClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEmbeddingClient</span></code></a></p>
+<p>Embedding provider that uses OpenAI’s Embedding API.</p>
+<p>This client relies on the <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> environment variable
+for authentication. It uses the default model
+<code class="docutils literal notranslate"><span class="pre">text-embedding-ada-002</span></code> unless otherwise specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> (<em>str</em>) – The OpenAI Embedding model to use.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#darca_embeddings.EmbeddingAPIKeyMissing" title="darca_embeddings.EmbeddingAPIKeyMissing"><strong>EmbeddingAPIKeyMissing</strong></a> – If the required API key environment
+variable is not found.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.OpenAIEmbeddingClient.get_embedding">
+<span class="sig-name descname"><span class="pre">get_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/darca_embeddings/embedding.html#OpenAIEmbeddingClient.get_embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#darca_embeddings.OpenAIEmbeddingClient.get_embedding" title="Link to this definition"></a></dt>
+<dd><p>Generate an embedding for a single piece of text using OpenAI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The input text to be embedded.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of floats representing the embedding of the text.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[float]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#darca_embeddings.EmbeddingResponseError" title="darca_embeddings.EmbeddingResponseError"><strong>EmbeddingResponseError</strong></a> – <ul class="simple">
+<li><p>If the OpenAI API call fails or returns
+an unexpected format.</p></li>
+<li><p>If an unknown error occurs during processing.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="darca_embeddings.OpenAIEmbeddingClient.get_embeddings">
+<span class="sig-name descname"><span class="pre">get_embeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#darca_embeddings.OpenAIEmbeddingClient.get_embeddings" title="Link to this definition"></a></dt>
+<dd><p>Generate vector embeddings for a list of input texts.</p>
+<p>By default, this method calls <a class="reference internal" href="#darca_embeddings.OpenAIEmbeddingClient.get_embedding" title="darca_embeddings.OpenAIEmbeddingClient.get_embedding"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_embedding()</span></code></a> for each string
+in <code class="docutils literal notranslate"><span class="pre">texts</span></code>.
+Subclasses may override this method to provide more efficient batch
+processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>texts</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – A list of input strings to embed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of embedding vectors, where each vector is a list of
+floats.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[list[float]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#darca_embeddings.EmbeddingException" title="darca_embeddings.EmbeddingException"><strong>EmbeddingException</strong></a> – If something goes wrong while generating
+embeddings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2025 darca-embeddings Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

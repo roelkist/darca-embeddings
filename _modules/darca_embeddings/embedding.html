@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>darca_embeddings.embedding &mdash; DARCA&#39;s Abstraction for embeddings. 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            DARCA's Abstraction for embeddings.
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DARCA's Abstraction for embeddings.</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">darca_embeddings.embedding</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for darca_embeddings.embedding</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">darca_exception.exception</span><span class="w"> </span><span class="kn">import</span> <span class="n">DarcaException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">darca_log_facility.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">DarcaLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIError</span>
+
+<span class="c1"># === Custom Exceptions ===</span>
+
+
+<div class="viewcode-block" id="EmbeddingException">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.EmbeddingException">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmbeddingException</span><span class="p">(</span><span class="n">DarcaException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all darca-embeddings exceptions.</span>
+
+<span class="sd">    This exception can be extended or raised for any errors</span>
+<span class="sd">    that occur within the darca-embeddings package.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="EmbeddingAPIKeyMissing">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.EmbeddingAPIKeyMissing">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmbeddingAPIKeyMissing</span><span class="p">(</span><span class="n">EmbeddingException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when the API key is missing for the selected embeddings provider.</span>
+
+<span class="sd">    Typically occurs when the environment variable (e.g. ``OPENAI_API_KEY``)</span>
+<span class="sd">    is not set or is invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="EmbeddingResponseError">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.EmbeddingResponseError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmbeddingResponseError</span><span class="p">(</span><span class="n">EmbeddingException</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when an embeddings API request fails or returns malformed data.</span>
+
+<span class="sd">    For example, it may be raised if the network request times out, the API</span>
+<span class="sd">    returns a non-200 status code, or the response is not in the expected</span>
+<span class="sd">    format.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1"># === Abstract Base Client ===</span>
+
+
+<div class="viewcode-block" id="BaseEmbeddingClient">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.BaseEmbeddingClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseEmbeddingClient</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract base class for Embedding providers.</span>
+
+<span class="sd">    Implementations of this class must provide methods to generate embeddings</span>
+<span class="sd">    from text input, typically by interacting with an external model or</span>
+<span class="sd">    service.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseEmbeddingClient.get_embedding">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.BaseEmbeddingClient.get_embedding">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a vector embedding for a single piece of text.</span>
+
+<span class="sd">        :param text: The input string to be embedded.</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        :returns: A floating-point vector (list) representation of the input</span>
+<span class="sd">                  text.</span>
+<span class="sd">        :rtype: list[float]</span>
+<span class="sd">        :raises EmbeddingException: If something goes wrong with the embedding</span>
+<span class="sd">                request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Must be overridden in subclass.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseEmbeddingClient.get_embeddings">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.BaseEmbeddingClient.get_embeddings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate vector embeddings for a list of input texts.</span>
+
+<span class="sd">        By default, this method calls :meth:`get_embedding` for each string</span>
+<span class="sd">        in ``texts``.</span>
+<span class="sd">        Subclasses may override this method to provide more efficient batch</span>
+<span class="sd">        processing.</span>
+
+<span class="sd">        :param texts: A list of input strings to embed.</span>
+<span class="sd">        :type texts: list[str]</span>
+<span class="sd">        :returns: A list of embedding vectors, where each vector is a list of</span>
+<span class="sd">                 floats.</span>
+<span class="sd">        :rtype: list[list[float]]</span>
+<span class="sd">        :raises EmbeddingException: If something goes wrong while generating</span>
+<span class="sd">                                    embeddings.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_embedding</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span></div>
+</div>
+
+
+
+<span class="c1"># === OpenAI Implementation ===</span>
+
+
+<div class="viewcode-block" id="OpenAIEmbeddingClient">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.OpenAIEmbeddingClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OpenAIEmbeddingClient</span><span class="p">(</span><span class="n">BaseEmbeddingClient</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Embedding provider that uses OpenAI&#39;s Embedding API.</span>
+
+<span class="sd">    This client relies on the ``OPENAI_API_KEY`` environment variable</span>
+<span class="sd">    for authentication. It uses the default model</span>
+<span class="sd">    ``text-embedding-ada-002`` unless otherwise specified.</span>
+
+<span class="sd">    :param model: The OpenAI Embedding model to use.</span>
+<span class="sd">    :type model: str</span>
+<span class="sd">    :raises EmbeddingAPIKeyMissing: If the required API key environment</span>
+<span class="sd">                                    variable is not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;text-embedding-ada-002&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">DarcaLogger</span><span class="p">(</span><span class="s2">&quot;darca-embeddings&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+        <span class="n">api_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">api_key</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmbeddingAPIKeyMissing</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;OPENAI_API_KEY environment variable is not set.&quot;</span><span class="p">,</span>
+                <span class="n">error_code</span><span class="o">=</span><span class="s2">&quot;EMBEDDING_API_KEY_MISSING&quot;</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;provider&quot;</span><span class="p">:</span> <span class="s2">&quot;openai&quot;</span><span class="p">},</span>
+            <span class="p">)</span>
+        <span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">api_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+<div class="viewcode-block" id="OpenAIEmbeddingClient.get_embedding">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.OpenAIEmbeddingClient.get_embedding">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate an embedding for a single piece of text using OpenAI.</span>
+
+<span class="sd">        :param text: The input text to be embedded.</span>
+<span class="sd">        :type text: str</span>
+<span class="sd">        :returns: A list of floats representing the embedding of the text.</span>
+<span class="sd">        :rtype: list[float]</span>
+<span class="sd">        :raises EmbeddingResponseError:</span>
+<span class="sd">                - If the OpenAI API call fails or returns</span>
+<span class="sd">                  an unexpected format.</span>
+<span class="sd">                - If an unknown error occurs during processing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Requesting embedding from OpenAI&quot;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">embeddings</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+            <span class="c1"># Each &#39;data&#39; item has an &#39;embedding&#39; list</span>
+            <span class="n">embedding</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">embedding</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Received embedding from OpenAI&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">embedding</span>
+
+        <span class="k">except</span> <span class="n">OpenAIError</span> <span class="k">as</span> <span class="n">oe</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmbeddingResponseError</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">&quot;OpenAI embedding API returned an error.&quot;</span><span class="p">,</span>
+                <span class="n">error_code</span><span class="o">=</span><span class="s2">&quot;EMBEDDING_API_REQUEST_FAILED&quot;</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;text_preview&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]},</span>
+                <span class="n">cause</span><span class="o">=</span><span class="n">oe</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmbeddingResponseError</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+                    <span class="s2">&quot;Unexpected failure during OpenAI &quot;</span>
+                    <span class="s2">&quot;embedding response parsing.&quot;</span>
+                <span class="p">),</span>
+                <span class="n">error_code</span><span class="o">=</span><span class="s2">&quot;EMBEDDING_RESPONSE_PARSE_ERROR&quot;</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">},</span>
+                <span class="n">cause</span><span class="o">=</span><span class="n">e</span><span class="p">,</span>
+            <span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># === EmbeddingClient Wrapper ===</span>
+
+
+<div class="viewcode-block" id="EmbeddingClient">
+<a class="viewcode-back" href="../../api.html#darca_embeddings.EmbeddingClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmbeddingClient</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A unified client for generating embeddings using the darca pluggable</span>
+<span class="sd">    backend system. Defaults to OpenAI.</span>
+
+<span class="sd">    This class wraps the functionality of various embedding providers</span>
+<span class="sd">    behind a single interface. By specifying the ``backend`` argument,</span>
+<span class="sd">    you can switch between multiple embeddings backends (e.g., OpenAI,</span>
+<span class="sd">    HuggingFace, etc.).</span>
+
+<span class="sd">    :param backend: The backend provider to use, e.g. ``openai``</span>
+<span class="sd">                    or ``huggingface``.</span>
+<span class="sd">    :type backend: str</span>
+<span class="sd">    :param kwargs: Additional keyword arguments passed to the backend</span>
+<span class="sd">                   client&#39;s constructor.</span>
+<span class="sd">    :raises EmbeddingException: If the chosen backend is not implemented</span>
+<span class="sd">                                or unsupported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;openai&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the EmbeddingClient with the given backend and</span>
+<span class="sd">        model settings.</span>
+
+<span class="sd">        :param backend: The embedding backend to use (default: ``openai``).</span>
+<span class="sd">        :type backend: str</span>
+<span class="sd">        :param kwargs: Additional parameters for the backend&#39;s constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;openai&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">OpenAIEmbeddingClient</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;huggingface&quot;</span><span class="p">:</span>
+            <span class="c1"># Placeholder for a future Hugging Face implementation</span>
+            <span class="k">raise</span> <span class="n">EmbeddingException</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Embedding backend &#39;</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&#39; is&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; not implemented yet.&quot;</span>
+                <span class="p">),</span>
+                <span class="n">error_code</span><span class="o">=</span><span class="s2">&quot;EMBEDDING_UNIMPLEMENTED_BACKEND&quot;</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;requested_backend&quot;</span><span class="p">:</span> <span class="n">backend</span><span class="p">},</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">EmbeddingException</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Embedding backend &#39;</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&#39; is not supported.&quot;</span><span class="p">,</span>
+                <span class="n">error_code</span><span class="o">=</span><span class="s2">&quot;EMBEDDING_UNSUPPORTED_BACKEND&quot;</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;requested_backend&quot;</span><span class="p">:</span> <span class="n">backend</span><span class="p">},</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delegate calls to the selected backend client.</span>
+
+<span class="sd">        For instance, if you call :meth:`get_embedding` on an</span>
+<span class="sd">        :class:`EmbeddingClient` instance, it will route to the current</span>
+<span class="sd">        backend&#39;s implementation (e.g. :class:`OpenAIEmbeddingClient`).</span>
+
+<span class="sd">        :param name: Name of the method or attribute to be retrieved.</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :returns: The underlying backend client&#39;s method or attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2025 darca-embeddings Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

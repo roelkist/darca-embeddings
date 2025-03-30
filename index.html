@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to darca-space-git’s documentation! &mdash; DARCA&#39;s Abstraction for embeddings. 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage Guide" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            DARCA's Abstraction for embeddings.
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">DARCA's Abstraction for embeddings.</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to darca-space-git’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-darca-space-git-s-documentation">
+<h1>Welcome to darca-space-git’s documentation!<a class="headerlink" href="#welcome-to-darca-space-git-s-documentation" title="Link to this heading"></a></h1>
+<p>Welcome to the documentation for <strong>darca-space-git</strong> — a Git-integration layer for <cite>darca-space-manager</cite>.</p>
+<section id="project-overview">
+<h2>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading"></a></h2>
+</section>
+</section>
+<section id="darca-embeddings">
+<h1>darca-embeddings<a class="headerlink" href="#darca-embeddings" title="Link to this heading"></a></h1>
+<p>Modular, backend-agnostic interface for generating text embeddings.
+Provides a consistent Pythonic API for embedding text using various underlying providers.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Unified Embedding Interface</strong>: Use one client class for multiple backends.</p></li>
+<li><p><strong>Default OpenAI Support</strong>: Integrates seamlessly with OpenAI’s Embedding API.</p></li>
+<li><p><strong>Extensible Design</strong>: Easy to add new backends (e.g., Hugging Face).</p></li>
+</ul>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Install</strong> (using Make + Poetry):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make install</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Set</strong> your environment variables (for example, <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> for OpenAI).</p></li>
+<li><p><strong>Use</strong> the embedding client:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">darca_embeddings</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmbeddingClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">EmbeddingClient</span><span class="p">()</span>
+<span class="n">embedding</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_embedding</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<p>We use <strong>Sphinx</strong> for building documentation. See <cite>docs/source/</cite> for the reST files.
+You can build the docs locally by:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make docs</span>
+</pre></div>
+</div>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h2>
+<p>Contributions are welcome! See the <a class="reference external" href="./CONTRIBUTING.rst">CONTRIBUTING.rst</a> for more details.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
+<p>This project is licensed under the MIT License. See the <cite>LICENSE</cite> file for more details.</p>
+</section>
+<section id="author">
+<h2>Author<a class="headerlink" href="#author" title="Link to this heading"></a></h2>
+<p><strong>Roel Kist</strong></p>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#backend-support">Backend Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#error-handling">Error Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#darca_embeddings.BaseEmbeddingClient"><code class="docutils literal notranslate"><span class="pre">BaseEmbeddingClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#darca_embeddings.EmbeddingAPIKeyMissing"><code class="docutils literal notranslate"><span class="pre">EmbeddingAPIKeyMissing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#darca_embeddings.EmbeddingClient"><code class="docutils literal notranslate"><span class="pre">EmbeddingClient</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#darca_embeddings.EmbeddingException"><code class="docutils literal notranslate"><span class="pre">EmbeddingException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#darca_embeddings.EmbeddingResponseError"><code class="docutils literal notranslate"><span class="pre">EmbeddingResponseError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#darca_embeddings.OpenAIEmbeddingClient"><code class="docutils literal notranslate"><span class="pre">OpenAIEmbeddingClient</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="community-contribution">
+<h2>Community &amp; Contribution<a class="headerlink" href="#community-contribution" title="Link to this heading"></a></h2>
+</section>
+</section>
+<section id="contributing-to-darca-embeddings">
+<h1>Contributing to darca-embeddings<a class="headerlink" href="#contributing-to-darca-embeddings" title="Link to this heading"></a></h1>
+<p>Thank you for your interest in improving <strong>darca-embeddings</strong>!</p>
+<section id="code-of-conduct">
+<h2>Code of Conduct<a class="headerlink" href="#code-of-conduct" title="Link to this heading"></a></h2>
+<p>Please note that we follow a standard open-source code of conduct.
+Be kind and constructive in all your interactions.</p>
+</section>
+<section id="id1">
+<h2>Getting Started<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Create a feature branch</strong> from the main branch:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git checkout main</span>
+<span class="go">git pull</span>
+<span class="go">git checkout -b feature/my-new-feature</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Make changes</strong> in your feature branch.</p></li>
+<li><p><strong>Test</strong> your changes locally by running partial or full checks:
+- <strong>`make format`</strong>: Auto-formats code via <cite>isort</cite> and <cite>black</cite>.
+- <strong>`make precommit`</strong>: Runs pre-commit hooks (lint checks, etc.).
+- <strong>`make test`</strong>: Runs the test suite (includes coverage).
+- <strong>`make docs`</strong>: Builds the Sphinx documentation.
+- <strong>`make check`</strong>: Runs install, format, pre-commit, test, and docs in one go.</p>
+<p>You can use individual commands to speed up development when fixing smaller things.</p>
+</li>
+<li><p><strong>Commit</strong> your changes.
+- Ensure all checks pass with <cite>make check</cite> before pushing.</p></li>
+<li><p><strong>Open a Pull Request</strong> for review.
+- Use the provided feature or issue templates if applicable.
+- |
+Provide a clear description of the changes, referencing any issues or
+discussions that they address.</p></li>
+</ol>
+</section>
+<section id="tips-tricks">
+<h2>Tips &amp; Tricks<a class="headerlink" href="#tips-tricks" title="Link to this heading"></a></h2>
+<ul>
+<li><p>If you need new dependencies, add them with:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make add-deps group=dev deps=&quot;some-package&quot;</span>
+</pre></div>
+</div>
+<p>This will keep your Poetry project organized.</p>
+</li>
+<li><p>If you want a production dependency, use:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make add-prod-deps deps=&quot;some-package&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Link to this heading"></a></h2>
+<p>If you have any questions or want to discuss a feature, open an issue in the repository
+or reach out directly to <strong>Roel Kist</strong>. We appreciate your support and contributions!</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (c) 2025 darca-embeddings Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
