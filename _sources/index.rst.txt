@@ -1,9 +1,7 @@
-.. darca-space-manager documentation master file
+.. darca-embeddingsndocumentation master file
 
-Welcome to darca-space-git's documentation!
+Welcome to darca-embeddings's documentation!
 ================================================
-
-Welcome to the documentation for **darca-space-git** — a Git-integration layer for `darca-space-manager`.
 
 Project Overview
 ----------------
