@@ -2,6 +2,8 @@ import os
 from abc import ABC, abstractmethod
 
 import openai
+from openai import OpenAIError
+
 from darca_exception.exception import DarcaException
 from darca_log_facility.logger import DarcaLogger
 
@@ -56,7 +58,7 @@ class BaseEmbeddingClient(ABC):
         :rtype: list[float]
         :raises EmbeddingException: If something goes wrong with the embedding request.
         """
-        pass
+        raise NotImplementedError("Must be overridden in subclass.")
 
     def get_embeddings(self, texts: list[str]) -> list[list[float]]:
         """
@@ -118,16 +120,16 @@ class OpenAIEmbeddingClient(BaseEmbeddingClient):
                 "Requesting embedding from OpenAI",
                 extra={"model": self.model}
             )
-            response = openai.Embedding.create(
+            response = openai.embeddings.create(
                 input=text,
                 model=self.model
             )
             # Each 'data' item has an 'embedding' list
-            embedding = response["data"][0]["embedding"]
+            embedding = response.data[0].embedding
             self.logger.debug("Received embedding from OpenAI")
             return embedding
 
-        except openai.OpenAIError as oe:
+        except OpenAIError as oe:
             raise EmbeddingResponseError(
                 message="OpenAI embedding API returned an error.",
                 error_code="EMBEDDING_API_REQUEST_FAILED",

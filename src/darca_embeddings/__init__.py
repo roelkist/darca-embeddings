@@ -10,7 +10,7 @@ Exports:
     - OpenAIEmbeddingClient: Concrete backend using OpenAI Embedding API
     - All custom exceptions
 """
-
+from .__version__ import version
 from .embedding import (
     EmbeddingClient,
     BaseEmbeddingClient,
@@ -21,6 +21,7 @@ from .embedding import (
 )
 
 __all__ = [
+    "version",
     "EmbeddingClient",
     "BaseEmbeddingClient",
     "OpenAIEmbeddingClient",

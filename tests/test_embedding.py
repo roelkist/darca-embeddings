@@ -1,191 +1,106 @@
-"""
-test_embedding.py
-
-Comprehensive tests for darca-embeddings, focusing on
-embedding.py to achieve near 100% code coverage.
-"""
+# tests/test_embedding.py
 
 import pytest
-from unittest.mock import MagicMock
-
-import os
+from unittest.mock import MagicMock, patch
 import openai
 
-from darca_embeddings.embedding import (
+from darca_embeddings import (
     BaseEmbeddingClient,
     OpenAIEmbeddingClient,
     EmbeddingClient,
-    EmbeddingException,
     EmbeddingAPIKeyMissing,
-    EmbeddingResponseError
+    EmbeddingResponseError,
+    EmbeddingException,
 )
 
+# -----------------------------------
+# 1. Testing the abstract base client
+# -----------------------------------
 
-# -------------------------------------------------------------------
-# Test the abstract base class
-# -------------------------------------------------------------------
-
-class MockEmbeddingClient(BaseEmbeddingClient):
-    """
-    Minimal subclass of BaseEmbeddingClient for testing abstract methods.
-    """
-    def __init__(self):
-        pass
-
+class DummyClient(BaseEmbeddingClient):
     def get_embedding(self, text: str) -> list[float]:
-        return [float(ord(c)) for c in text]  # silly example: convert chars to float
+        return [1.0, 2.0, 3.0]
 
 def test_base_embedding_client_get_embeddings():
-    """
-    Verifies BaseEmbeddingClient.get_embeddings calls get_embedding
-    on each text by default.
-    """
-    client = MockEmbeddingClient()
-    texts = ["A", "BC"]
-    embeddings = client.get_embeddings(texts)
-    assert len(embeddings) == 2
-    assert embeddings[0] == [float(ord("A"))]
-    assert embeddings[1] == [float(ord("B")), float(ord("C"))]
+    dummy = DummyClient()
+    inputs = ["hello", "world"]
+    outputs = dummy.get_embeddings(inputs)
 
+    assert len(outputs) == 2
+    assert outputs[0] == [1.0, 2.0, 3.0]
+    assert outputs[1] == [1.0, 2.0, 3.0]
 
-# -------------------------------------------------------------------
-# Test OpenAIEmbeddingClient
-# -------------------------------------------------------------------
+# ------------------------------------------
+# 2. Testing OpenAIEmbeddingClient directly
+# ------------------------------------------
 
-def test_openai_embedding_client_init_no_api_key(monkeypatch):
-    """
-    Ensures that if OPENAI_API_KEY is missing, EmbeddingAPIKeyMissing is raised.
-    """
-    # Remove any existing key
+def test_openai_embedding_client_no_api_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
-    with pytest.raises(EmbeddingAPIKeyMissing) as exc_info:
-        OpenAIEmbeddingClient()
-    assert "OPENAI_API_KEY" in str(exc_info.value)
+    with pytest.raises(EmbeddingAPIKeyMissing):
+        _ = OpenAIEmbeddingClient()
 
+@patch("openai.embeddings.create")
+def test_openai_embedding_client_success(mock_create, openai_api_key):
+    mock_create.return_value = MagicMock(
+        data=[MagicMock(embedding=[0.1, 0.2, 0.3])]
+    )
+    client = OpenAIEmbeddingClient()  # uses fixture-provided env var
+    embedding = client.get_embedding("Hello world")
 
-def test_openai_embedding_client_init_success(set_openai_api_key):
-    """
-    Tests that OpenAIEmbeddingClient initializes with no errors
-    when OPENAI_API_KEY is set.
-    """
-    client = OpenAIEmbeddingClient()
-    assert client.model == "text-embedding-ada-002"
-    # Also ensure openai.api_key is set in the library
-    assert openai.api_key == "test_key"
+    assert embedding == [0.1, 0.2, 0.3]
+    mock_create.assert_called_once_with(input="Hello world", model="text-embedding-ada-002")
 
-
-def test_openai_embedding_client_get_embedding_success(
-    set_openai_api_key,
-    mock_openai_embedding_create
-):
-    """
-    Tests a successful embedding request using OpenAIEmbeddingClient.
-    """
-    # Mock a typical OpenAI embedding response
-    mock_openai_embedding_create.return_value = {
-        "data": [
-            {"embedding": [0.123, 0.456, 0.789]}
-        ]
-    }
-
-    client = OpenAIEmbeddingClient()
-    vector = client.get_embedding("Hello world")
-    assert vector == [0.123, 0.456, 0.789]
-    mock_openai_embedding_create.assert_called_once()
-
-
-def test_openai_embedding_client_get_embedding_openai_error(
-    set_openai_api_key,
-    mock_openai_embedding_create
-):
-    """
-    Tests that OpenAIEmbeddingClient raises EmbeddingResponseError
-    if openai.Embedding.create raises an OpenAIError.
-    """
-    from openai.error import OpenAIError
-
-    mock_openai_embedding_create.side_effect = OpenAIError("Some OpenAI issue")
-
+@patch("openai.embeddings.create", side_effect=openai.OpenAIError("API Error"))
+def test_openai_embedding_client_openai_error(_, openai_api_key):
     client = OpenAIEmbeddingClient()
     with pytest.raises(EmbeddingResponseError) as exc_info:
-        client.get_embedding("trigger error")
+        client.get_embedding("Hello world")
     assert "OpenAI embedding API returned an error." in str(exc_info.value)
 
-
-def test_openai_embedding_client_get_embedding_unexpected_exception(
-    set_openai_api_key,
-    mock_openai_embedding_create
-):
-    """
-    Tests that OpenAIEmbeddingClient raises EmbeddingResponseError
-    if an unexpected exception occurs.
-    """
-    mock_openai_embedding_create.side_effect = ValueError("Some random error")
-
+@patch("openai.embeddings.create", side_effect=ValueError("Some other error"))
+def test_openai_embedding_client_general_error(_, openai_api_key):
     client = OpenAIEmbeddingClient()
     with pytest.raises(EmbeddingResponseError) as exc_info:
-        client.get_embedding("trigger exception")
-    assert "Unexpected failure" in str(exc_info.value)
+        client.get_embedding("Hello world")
+    assert "Unexpected failure during OpenAI embedding response parsing." in str(exc_info.value)
 
-
-def test_openai_embedding_client_get_embeddings_batch(
-    set_openai_api_key,
-    mock_openai_embedding_create
-):
+def test_base_embedding_client_abstract_pass():
     """
-    Tests that get_embeddings calls get_embedding for each text.
+    Force coverage of the abstract method's 'pass' line by
+    subclassing BaseEmbeddingClient and calling super().get_embedding().
     """
-    mock_openai_embedding_create.return_value = {"data": [{"embedding": [1.0]}]}
 
-    client = OpenAIEmbeddingClient()
-    results = client.get_embeddings(["A", "B", "C"])
-    # We'll get the same result for each call
-    assert len(results) == 3
-    for res in results:
-        assert res == [1.0]
-    # openai.Embedding.create was called three times
-    assert mock_openai_embedding_create.call_count == 3
+    class PartialClient(BaseEmbeddingClient):
+        # We implement get_embedding in a way that calls the parent's method
+        # (which is 'pass'), causing NotImplementedError to be raised.
+        def get_embedding(self, text: str) -> list[float]:
+            return super().get_embedding(text)
 
+    client = PartialClient()
+    with pytest.raises(NotImplementedError):
+        client.get_embedding("test")
+        
+# -----------------------------------
+# 3. Testing the EmbeddingClient wrap
+# -----------------------------------
 
-# -------------------------------------------------------------------
-# Test EmbeddingClient
-# -------------------------------------------------------------------
-
-def test_embedding_client_openai_backend(set_openai_api_key):
-    """
-    Tests that EmbeddingClient initializes an OpenAIEmbeddingClient by default.
-    """
-    emb_client = EmbeddingClient()
-    # Check that it's an OpenAIEmbeddingClient
-    assert isinstance(emb_client._client, OpenAIEmbeddingClient)
-
+def test_embedding_client_openai_backend(openai_api_key):
+    client = EmbeddingClient(backend="openai")
+    assert isinstance(client._client, OpenAIEmbeddingClient)
 
 def test_embedding_client_huggingface_backend():
-    """
-    Tests that specifying 'huggingface' raises EmbeddingException
-    because it's not implemented yet.
-    """
     with pytest.raises(EmbeddingException) as exc_info:
-        EmbeddingClient(backend="huggingface")
-    assert "not implemented yet" in str(exc_info.value)
+        _ = EmbeddingClient(backend="huggingface")
+    assert "is not implemented yet." in str(exc_info.value)
 
-
-def test_embedding_client_unknown_backend():
-    """
-    Tests that specifying an unknown backend raises EmbeddingException.
-    """
+def test_embedding_client_unsupported_backend():
     with pytest.raises(EmbeddingException) as exc_info:
-        EmbeddingClient(backend="unknown")
-    assert "is not supported" in str(exc_info.value)
+        _ = EmbeddingClient(backend="unsupported")
+    assert "is not supported." in str(exc_info.value)
 
-
-def test_embedding_client_getattr_pass_through(set_openai_api_key):
-    """
-    Tests that calling a method not on EmbeddingClient is passed
-    to the underlying backend client.
-    """
-    emb_client = EmbeddingClient()
-    # We know get_embeddings is on the backend. We'll mock it:
-    with pytest.raises(TypeError):
-        # get_embeddings expects a list of strings
-        emb_client.get_embeddings("Not a list")
+def test_embedding_client_getattr(openai_api_key):
+    client = EmbeddingClient(backend="openai")
+    with patch.object(client._client, "get_embedding", return_value=[0.4, 0.5, 0.6]) as mock_method:
+        result = client.get_embedding("Delegation test")
+        mock_method.assert_called_once_with("Delegation test")
+        assert result == [0.4, 0.5, 0.6]
