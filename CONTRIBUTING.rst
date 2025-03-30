@@ -1,52 +1,58 @@
-===============================
-Contributing to Darca Space Git
-===============================
+Contributing to darca-embeddings
+================================
 
-We welcome community contributions to **darca-space-git**!
+Thank you for your interest in improving **darca-embeddings**!
 
-How to Contribute
-=================
+Code of Conduct
+---------------
+Please note that we follow a standard open-source code of conduct. 
+Be kind and constructive in all your interactions.
 
-1. Fork the repo
-2. Create a new branch:
+Getting Started
+---------------
+1. **Create a feature branch** from the main branch:
+   
+   .. code-block:: console
 
-   .. code-block:: bash
+      git checkout main
+      git pull
+      git checkout -b feature/my-new-feature
 
-      git checkout -b feature/your-feature-name
+2. **Make changes** in your feature branch.
+3. **Test** your changes locally by running partial or full checks:
+   - **`make format`**: Auto-formats code via `isort` and `black`.
+   - **`make precommit`**: Runs pre-commit hooks (lint checks, etc.).
+   - **`make test`**: Runs the test suite (includes coverage).
+   - **`make docs`**: Builds the Sphinx documentation.
+   - **`make check`**: Runs install, format, pre-commit, test, and docs in one go.
 
-3. Install the project:
+   You can use individual commands to speed up development when fixing smaller things.
 
-   .. code-block:: bash
+4. **Commit** your changes. 
+   - Ensure all checks pass with `make check` before pushing.
 
-      make install
+5. **Open a Pull Request** for review.
+   - Use the provided feature or issue templates if applicable.
+   - |
+   Provide a clear description of the changes, referencing any issues or
+   discussions that they address.
 
-4. Make changes and validate them:
+Tips & Tricks
+-------------
+- If you need new dependencies, add them with:
 
-   .. code-block:: bash
+  .. code-block:: console
 
-      make check
+     make add-deps group=dev deps="some-package"
 
-5. Open a **pull request** against `main`.
+  This will keep your Poetry project organized.
+- If you want a production dependency, use:
 
-Branch Naming
-=============
+  .. code-block:: console
 
-Use semantic naming:
+     make add-prod-deps deps="some-package"
 
-- `feature/...` for new functionality
-- `fix/...` for bug fixes
-- `docs/...` for doc-only updates
-
-Pull Request Requirements
-=========================
-
-- ✅ Pass `make check` (format, test, lint, docs)
-- 🔍 Be focused and concise
-- 🧪 Include tests for your feature or fix
-
-Tips
-====
-
-- Use `make format` to reformat code with Black and isort
-- Dry-run logic is supported in most Git operations — test it!
-- Ask questions or request early feedback anytime 🚀
+Contact
+-------
+If you have any questions or want to discuss a feature, open an issue in the repository 
+or reach out directly to **Roel Kist**. We appreciate your support and contributions!

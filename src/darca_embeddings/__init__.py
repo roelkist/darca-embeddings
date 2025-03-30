@@ -10,14 +10,15 @@ Exports:
     - OpenAIEmbeddingClient: Concrete backend using OpenAI Embedding API
     - All custom exceptions
 """
+
 from .__version__ import version
 from .embedding import (
-    EmbeddingClient,
     BaseEmbeddingClient,
-    OpenAIEmbeddingClient,
-    EmbeddingException,
     EmbeddingAPIKeyMissing,
-    EmbeddingResponseError
+    EmbeddingClient,
+    EmbeddingException,
+    EmbeddingResponseError,
+    OpenAIEmbeddingClient,
 )
 
 __all__ = [
@@ -27,5 +28,5 @@ __all__ = [
     "OpenAIEmbeddingClient",
     "EmbeddingException",
     "EmbeddingAPIKeyMissing",
-    "EmbeddingResponseError"
+    "EmbeddingResponseError",
 ]

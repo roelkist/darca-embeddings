@@ -1,25 +1,28 @@
 # tests/test_embedding.py
 
-import pytest
 from unittest.mock import MagicMock, patch
+
 import openai
+import pytest
 
 from darca_embeddings import (
     BaseEmbeddingClient,
-    OpenAIEmbeddingClient,
-    EmbeddingClient,
     EmbeddingAPIKeyMissing,
-    EmbeddingResponseError,
+    EmbeddingClient,
     EmbeddingException,
+    EmbeddingResponseError,
+    OpenAIEmbeddingClient,
 )
 
 # -----------------------------------
 # 1. Testing the abstract base client
 # -----------------------------------
 
+
 class DummyClient(BaseEmbeddingClient):
     def get_embedding(self, text: str) -> list[float]:
         return [1.0, 2.0, 3.0]
+
 
 def test_base_embedding_client_get_embeddings():
     dummy = DummyClient()
@@ -30,14 +33,17 @@ def test_base_embedding_client_get_embeddings():
     assert outputs[0] == [1.0, 2.0, 3.0]
     assert outputs[1] == [1.0, 2.0, 3.0]
 
+
 # ------------------------------------------
 # 2. Testing OpenAIEmbeddingClient directly
 # ------------------------------------------
+
 
 def test_openai_embedding_client_no_api_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     with pytest.raises(EmbeddingAPIKeyMissing):
         _ = OpenAIEmbeddingClient()
+
 
 @patch("openai.embeddings.create")
 def test_openai_embedding_client_success(mock_create, openai_api_key):
@@ -48,7 +54,10 @@ def test_openai_embedding_client_success(mock_create, openai_api_key):
     embedding = client.get_embedding("Hello world")
 
     assert embedding == [0.1, 0.2, 0.3]
-    mock_create.assert_called_once_with(input="Hello world", model="text-embedding-ada-002")
+    mock_create.assert_called_once_with(
+        input="Hello world", model="text-embedding-ada-002"
+    )
+
 
 @patch("openai.embeddings.create", side_effect=openai.OpenAIError("API Error"))
 def test_openai_embedding_client_openai_error(_, openai_api_key):
@@ -57,12 +66,17 @@ def test_openai_embedding_client_openai_error(_, openai_api_key):
         client.get_embedding("Hello world")
     assert "OpenAI embedding API returned an error." in str(exc_info.value)
 
+
 @patch("openai.embeddings.create", side_effect=ValueError("Some other error"))
 def test_openai_embedding_client_general_error(_, openai_api_key):
     client = OpenAIEmbeddingClient()
     with pytest.raises(EmbeddingResponseError) as exc_info:
         client.get_embedding("Hello world")
-    assert "Unexpected failure during OpenAI embedding response parsing." in str(exc_info.value)
+    assert (
+        "Unexpected failure during OpenAI embedding response parsing."
+        in str(exc_info.value)
+    )
+
 
 def test_base_embedding_client_abstract_pass():
     """
@@ -79,28 +93,35 @@ def test_base_embedding_client_abstract_pass():
     client = PartialClient()
     with pytest.raises(NotImplementedError):
         client.get_embedding("test")
-        
+
+
 # -----------------------------------
 # 3. Testing the EmbeddingClient wrap
 # -----------------------------------
 
+
 def test_embedding_client_openai_backend(openai_api_key):
     client = EmbeddingClient(backend="openai")
     assert isinstance(client._client, OpenAIEmbeddingClient)
+
 
 def test_embedding_client_huggingface_backend():
     with pytest.raises(EmbeddingException) as exc_info:
         _ = EmbeddingClient(backend="huggingface")
     assert "is not implemented yet." in str(exc_info.value)
 
+
 def test_embedding_client_unsupported_backend():
     with pytest.raises(EmbeddingException) as exc_info:
         _ = EmbeddingClient(backend="unsupported")
     assert "is not supported." in str(exc_info.value)
 
+
 def test_embedding_client_getattr(openai_api_key):
     client = EmbeddingClient(backend="openai")
-    with patch.object(client._client, "get_embedding", return_value=[0.4, 0.5, 0.6]) as mock_method:
+    with patch.object(
+        client._client, "get_embedding", return_value=[0.4, 0.5, 0.6]
+    ) as mock_method:
         result = client.get_embedding("Delegation test")
         mock_method.assert_called_once_with("Delegation test")
         assert result == [0.4, 0.5, 0.6]

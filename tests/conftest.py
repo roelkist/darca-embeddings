@@ -1,11 +1,13 @@
 import pytest
-import os
+
 
 @pytest.fixture
 def openai_api_key(monkeypatch):
     """
-    Provides a default environment variable OPENAI_API_KEY for tests that need it.
-    This fixture is used only when explicitly requested in the test function.
+    Provides a default environment variable OPENAI_API_KEY for tests
+    that need it.
+    This fixture is used only when explicitly requested in the test
+    function.
     """
     monkeypatch.setenv("OPENAI_API_KEY", "test-api-key")
     yield
