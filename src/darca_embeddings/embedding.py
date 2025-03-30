@@ -123,9 +123,9 @@ class OpenAIEmbeddingClient(BaseEmbeddingClient):
         :type text: str
         :returns: A list of floats representing the embedding of the text.
         :rtype: list[float]
-        :raises EmbeddingResponseError: 
+        :raises EmbeddingResponseError:
                 - If the OpenAI API call fails or returns
-                  an unexpected format. 
+                  an unexpected format.
                 - If an unknown error occurs during processing.
         """
 
